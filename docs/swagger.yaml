@@ -1,6 +1,13 @@
 basePath: /
 definitions:
   viewmodels.CreateGameRequest:
+    properties:
+      cols:
+        type: integer
+      mines:
+        type: integer
+      rows:
+        type: integer
     type: object
   viewmodels.CreateGameResponse:
     properties:
@@ -14,10 +21,16 @@ definitions:
         type: integer
       created_at:
         type: string
+      finished_at:
+        type: string
+      id:
+        type: string
       mines:
         type: integer
       rows:
         type: integer
+      status:
+        type: string
     type: object
   viewmodels.FlagRequest:
     properties:
@@ -33,7 +46,7 @@ definitions:
       row:
         type: integer
     type: object
-host: http://localhost:8001
+host: 159.203.183.166
 info:
   contact:
     email: hernanrocha93(at)gmail.com
@@ -65,10 +78,34 @@ paths:
       summary: Create Game
       tags:
       - Game
+  /api/v1/game/{id}:
+    get:
+      description: Get Game from database
+      parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/viewmodels.CreateGameResponse'
+      summary: Get Game
+      tags:
+      - Game
   /api/v1/game/{id}/flag:
     post:
       description: Flag cell in board
       parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Cell Data
         in: body
         name: user
@@ -89,6 +126,11 @@ paths:
     post:
       description: Reveal cell in board
       parameters:
+      - description: Game ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Cell Data
         in: body
         name: user

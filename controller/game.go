@@ -59,7 +59,7 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 // @Summary Get Game
 // @Description Get Game from database
 // @Tags Game
-// @Param id path int true "Game ID"
+// @Param id path string true "Game ID"
 // @Produce  json
 // @Success 200 {object} viewmodels.CreateGameResponse
 // @Router /api/v1/game/{id} [get]
@@ -92,7 +92,7 @@ func (c *GameController) GetGame(ctx *gin.Context) {
 // @Summary Reveal Cell
 // @Description Reveal cell in board
 // @Tags Game
-// @Param id path int true "Game ID"
+// @Param id path string true "Game ID"
 // @Param user body viewmodels.RevealRequest true "Cell Data"
 // @Produce  json
 // @Success 200 {object} viewmodels.CreateGameResponse
@@ -134,7 +134,7 @@ func (c *GameController) RevealCell(ctx *gin.Context) {
 // @Summary Flag Cell
 // @Description Flag cell in board
 // @Tags Game
-// @Param id path int true "Game ID"
+// @Param id path string true "Game ID"
 // @Param user body viewmodels.FlagRequest true "Cell Data"
 // @Produce  json
 // @Success 200 {object} viewmodels.CreateGameResponse

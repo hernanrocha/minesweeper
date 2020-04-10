@@ -13,7 +13,7 @@
         },
         "version": "1.0"
     },
-    "host": "http://localhost:8001",
+    "host": "159.203.183.166",
     "basePath": "/",
     "paths": {
         "/api/v1/game": {
@@ -47,6 +47,35 @@
                 }
             }
         },
+        "/api/v1/game/{id}": {
+            "get": {
+                "description": "Get Game from database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Get Game",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Game ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.CreateGameResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/game/{id}/flag": {
             "post": {
                 "description": "Flag cell in board",
@@ -58,6 +87,13 @@
                 ],
                 "summary": "Flag Cell",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Game ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "Cell Data",
                         "name": "user",
@@ -90,6 +126,13 @@
                 "summary": "Reveal Cell",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Game ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Cell Data",
                         "name": "user",
                         "in": "body",
@@ -112,7 +155,18 @@
     },
     "definitions": {
         "viewmodels.CreateGameRequest": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "cols": {
+                    "type": "integer"
+                },
+                "mines": {
+                    "type": "integer"
+                },
+                "rows": {
+                    "type": "integer"
+                }
+            }
         },
         "viewmodels.CreateGameResponse": {
             "type": "object",
@@ -132,11 +186,20 @@
                 "created_at": {
                     "type": "string"
                 },
+                "finished_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
                 "mines": {
                     "type": "integer"
                 },
                 "rows": {
                     "type": "integer"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },

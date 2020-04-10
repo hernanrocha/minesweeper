@@ -4,3 +4,16 @@ services:
     image: "redis:alpine"
     ports:
      - "16379:6379"
+
+ goserver:
+    build:
+      context: "."
+      dockerfile: "Dockerfile"
+    depends_on:
+    - redis
+    environment:
+    - DB_CONNECTION=redis:6379
+    volumes:
+    - .:/usr/src/app
+    ports:
+    - "8002:8002"

@@ -18,7 +18,7 @@ type CreateGameResponse struct {
 	Board      [][]int    `json:"board"`
 	Status     string     `json:"status"`
 	CreatedAt  time.Time  `json:"created_at"`
-	FinishedAt *time.Time `json:"finished_at;omitempty"`
+	FinishedAt *time.Time `json:"finished_at,omitempty"`
 }
 
 type RevealRequest struct {
