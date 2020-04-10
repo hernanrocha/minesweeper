@@ -38,6 +38,7 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 	}
 
 	game := models.NewGame()
+	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
 		Rows:      game.Rows,
@@ -67,6 +68,7 @@ func (c *GameController) RevealCell(ctx *gin.Context) {
 
 	game := models.CurrentGame
 	game.RevealCell(json.Row, json.Col)
+	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
 		Rows:      game.Rows,
@@ -96,6 +98,7 @@ func (c *GameController) FlagCell(ctx *gin.Context) {
 
 	game := models.CurrentGame
 	game.FlagCell(json.Row, json.Col)
+	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
 		Rows:      game.Rows,
