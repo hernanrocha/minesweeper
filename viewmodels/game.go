@@ -11,6 +11,7 @@ type CreateGameRequest struct {
 }
 
 type CreateGameResponse struct {
+	ID        string    `json:"id"`
 	Rows      int       `json:"rows"`
 	Cols      int       `json:"cols"`
 	Mines     int       `json:"mines"`

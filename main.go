@@ -6,6 +6,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
+	"github.com/go-redis/redis/v7"
 	"github.com/hernanrocha/minesweeper/controller"
 	_ "github.com/hernanrocha/minesweeper/docs"
 )
@@ -40,19 +41,20 @@ func main() {
 	log.Println("Starting web server...")
 	os.Setenv("PORT", "8002")
 
-	// Setup Postgres database
-	/*
-		dbconn := getEnv("DB_CONNECTION", "host=localhost port=15432 user=postgres password=postgres dbname=finchat sslmode=disable")
-		db, err := gorm.Open("postgres", dbconn)
-		failOnError(err, "Error conecting to database")
-		defer db.Close()
+	// Setup Redis database
+	addr := getEnv("DB_CONNECTION", "localhost:16379")
+	client := redis.NewClient(&redis.Options{
+		Addr:     addr,
+		Password: "",
+		DB:       0,
+	})
 
-		// Run migration
-		models.Setup(db)
-	*/
+	err := client.Set("key", "value", 0).Err()
+	failOnError(err, "Error conecting to redis")
+	defer client.Close()
 
 	// Setup router
-	r := controller.SetupRouter()
-	err := r.Run() // listen and serve on 0.0.0.0:8001
+	r := controller.SetupRouter(client)
+	err = r.Run() // listen and serve on 0.0.0.0:8002
 	failOnError(err, "Failed starting server")
 }

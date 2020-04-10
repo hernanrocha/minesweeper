@@ -3,13 +3,14 @@ package controller
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v7"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(client *redis.Client) *gin.Engine {
 	// Controllers
-	c := NewGameController()
+	c := NewGameController(client)
 
 	// Default Engine
 	r := gin.Default()
@@ -41,6 +42,7 @@ func SetupRouter() *gin.Engine {
 		// auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
 		v1.POST("/game", c.CreateGame)
+		v1.GET("/game/:id", c.GetGame)
 		v1.POST("/game/:id/reveal", c.RevealCell)
 		v1.POST("/game/:id/flag", c.FlagCell)
 	}

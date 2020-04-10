@@ -1,8 +1,12 @@
 package models
 
 import (
+	"encoding/json"
 	"math/rand"
+	"strings"
 	"time"
+
+	"github.com/go-redis/redis/v7"
 )
 
 const (
@@ -23,6 +27,7 @@ const (
 )
 
 type Game struct {
+	ID        string
 	CreatedAt time.Time
 	Rows      int
 	Cols      int
@@ -31,10 +36,9 @@ type Game struct {
 	Status    GameStatus
 }
 
-var CurrentGame *Game
-
 func NewGame(rows, cols, mines int) *Game {
 	game := &Game{
+		ID:        generateID(),
 		CreatedAt: time.Now(),
 		Rows:      rows,
 		Cols:      cols,
@@ -72,13 +76,25 @@ func NewGame(rows, cols, mines int) *Game {
 	// Generate random bombs
 	game.generateBombs()
 
-	CurrentGame = game
-
 	return game
+}
+
+func LoadGame(db *redis.Client, id string) (*Game, error) {
+	str, err := db.Get(strings.ToUpper(id)).Result()
+	if err != nil {
+		return nil, err
+	}
+
+	var g Game
+	if err := json.Unmarshal([]byte(str), &g); err != nil {
+		return nil, err
+	}
+	return &g, nil
 }
 
 func (g *Game) ToView() *Game {
 	view := &Game{
+		ID:        g.ID,
 		CreatedAt: g.CreatedAt,
 		Rows:      g.Rows,
 		Cols:      g.Cols,
@@ -155,6 +171,11 @@ func (g *Game) FlagCell(row, col int) {
 	}
 }
 
+func (g *Game) Save(db *redis.Client) error {
+	str, _ := json.Marshal(g)
+	return db.Set(strings.ToUpper(g.ID), str, 0).Err()
+}
+
 func (g *Game) putBomb(pos int) {
 	count := 0
 	for i := 0; i < g.Rows; i++ {
@@ -229,4 +250,14 @@ func (g *Game) isOver() bool {
 		}
 	}
 	return true
+}
+
+var letterRunes = []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func generateID() string {
+	b := make([]rune, 5)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }
