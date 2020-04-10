@@ -34,7 +34,7 @@ func getEnv(key, fallback string) string {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 159.203.183.166
+// @host 159.203.183.166:8002
 // @BasePath /
 
 func main() {

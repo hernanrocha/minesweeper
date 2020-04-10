@@ -46,7 +46,7 @@ definitions:
       row:
         type: integer
     type: object
-host: 159.203.183.166
+host: 159.203.183.166:8002
 info:
   contact:
     email: hernanrocha93(at)gmail.com
