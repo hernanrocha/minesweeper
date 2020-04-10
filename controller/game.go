@@ -37,7 +37,7 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 		return
 	}
 
-	game := models.NewGame()
+	game := models.NewGame(json.Rows, json.Cols, json.Mines)
 	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{

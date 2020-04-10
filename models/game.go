@@ -33,15 +33,36 @@ type Game struct {
 
 var CurrentGame *Game
 
-func NewGame() *Game {
+func NewGame(rows, cols, mines int) *Game {
 	game := &Game{
 		CreatedAt: time.Now(),
-		Rows:      5,
-		Cols:      5,
-		Mines:     3,
+		Rows:      rows,
+		Cols:      cols,
+		Mines:     mines,
 		Status:    STATUS_PLAYING,
 	}
 
+	// Validate parameters
+	if game.Rows < 5 {
+		game.Rows = 5
+	}
+	if game.Rows > 20 {
+		game.Rows = 20
+	}
+	if game.Cols < 5 {
+		game.Cols = 5
+	}
+	if game.Cols > 20 {
+		game.Cols = 20
+	}
+	if game.Mines < 5 {
+		game.Mines = 5
+	}
+	if game.Mines >= game.Rows*game.Cols {
+		game.Mines = game.Rows*game.Cols - 1
+	}
+
+	// Create Board
 	game.Board = make([][]int, game.Rows)
 
 	for i := 0; i < len(game.Board); i++ {

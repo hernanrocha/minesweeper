@@ -4,7 +4,11 @@ import (
 	"time"
 )
 
-type CreateGameRequest struct{}
+type CreateGameRequest struct {
+	Rows  int `json:"rows"`
+	Cols  int `json:"cols"`
+	Mines int `json:"mines"`
+}
 
 type CreateGameResponse struct {
 	Rows      int       `json:"rows"`
