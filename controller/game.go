@@ -46,6 +46,7 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 		Mines:     game.Mines,
 		Board:     game.Board,
 		CreatedAt: game.CreatedAt,
+		Status:    string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -76,6 +77,7 @@ func (c *GameController) RevealCell(ctx *gin.Context) {
 		Mines:     game.Mines,
 		Board:     game.Board,
 		CreatedAt: game.CreatedAt,
+		Status:    string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -106,6 +108,7 @@ func (c *GameController) FlagCell(ctx *gin.Context) {
 		Mines:     game.Mines,
 		Board:     game.Board,
 		CreatedAt: game.CreatedAt,
+		Status:    string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)

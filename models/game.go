@@ -6,11 +6,20 @@ import (
 )
 
 const (
-	CELL_BLANK      = 0
-	CELL_BOMB       = -1
-	CELL_BLANK_FLAG = -2
-	CELL_CLEAR      = -3
-	CELL_BOMB_FLAG  = -4
+	CELL_BLANK         = 0
+	CELL_BOMB          = -1
+	CELL_BLANK_FLAG    = -2
+	CELL_CLEAR         = -3
+	CELL_BOMB_FLAG     = -4
+	CELL_REVEALED_BOMB = -5
+)
+
+type GameStatus string
+
+const (
+	STATUS_PLAYING GameStatus = "playing"
+	STATUS_LOSE    GameStatus = "lose"
+	STATUS_WON     GameStatus = "won"
 )
 
 type Game struct {
@@ -19,16 +28,18 @@ type Game struct {
 	Cols      int
 	Mines     int
 	Board     [][]int
+	Status    GameStatus
 }
 
-var CurrentGame Game
+var CurrentGame *Game
 
-func NewGame() Game {
-	game := Game{
+func NewGame() *Game {
+	game := &Game{
 		CreatedAt: time.Now(),
 		Rows:      5,
 		Cols:      5,
 		Mines:     3,
+		Status:    STATUS_PLAYING,
 	}
 
 	game.Board = make([][]int, game.Rows)
@@ -45,12 +56,13 @@ func NewGame() Game {
 	return game
 }
 
-func (g *Game) ToView() Game {
-	view := Game{
+func (g *Game) ToView() *Game {
+	view := &Game{
 		CreatedAt: g.CreatedAt,
 		Rows:      g.Rows,
 		Cols:      g.Cols,
 		Mines:     g.Mines,
+		Status:    g.Status,
 	}
 
 	view.Board = make([][]int, view.Rows)
@@ -75,7 +87,7 @@ func (g *Game) ToView() Game {
 }
 
 func (g *Game) RevealCell(row, col int) {
-	if row < 0 || row >= g.Rows || col < 0 || col >= g.Cols {
+	if row < 0 || row >= g.Rows || col < 0 || col >= g.Cols || g.Status != STATUS_PLAYING {
 		return
 	}
 
@@ -96,11 +108,18 @@ func (g *Game) RevealCell(row, col int) {
 		} else {
 			g.Board[row][col] = count
 		}
+
+		if g.isOver() {
+			g.Status = STATUS_WON
+		}
+	} else if g.Board[row][col] == CELL_BOMB {
+		g.Board[row][col] = CELL_REVEALED_BOMB
+		g.Status = STATUS_LOSE
 	}
 }
 
 func (g *Game) FlagCell(row, col int) {
-	if row < 0 || row >= g.Rows || col < 0 || col >= g.Cols {
+	if row < 0 || row >= g.Rows || col < 0 || col >= g.Cols || g.Status != STATUS_PLAYING {
 		return
 	}
 
@@ -145,7 +164,7 @@ func (g *Game) isBomb(row, col int) bool {
 		return false
 	}
 
-	return g.Board[row][col] == CELL_BOMB
+	return g.Board[row][col] == CELL_BOMB || g.Board[row][col] == CELL_BOMB_FLAG
 }
 
 func (g *Game) calculateCell(row, col int) int {
@@ -178,4 +197,15 @@ func (g *Game) calculateCell(row, col int) int {
 	}
 
 	return bombs
+}
+
+func (g *Game) isOver() bool {
+	for i := 0; i < g.Rows; i++ {
+		for j := 0; j < g.Cols; j++ {
+			if g.Board[i][j] == CELL_BLANK || g.Board[i][j] == CELL_BLANK_FLAG {
+				return false
+			}
+		}
+	}
+	return true
 }

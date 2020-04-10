@@ -11,6 +11,7 @@ type CreateGameResponse struct {
 	Cols      int       `json:"cols"`
 	Mines     int       `json:"mines"`
 	Board     [][]int   `json:"board"`
+	Status    string    `json:"status"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
