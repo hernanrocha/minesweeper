@@ -13,3 +13,13 @@ type CreateGameResponse struct {
 	Board     [][]int   `json:"board"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type RevealRequest struct {
+	Row int `json:"row"`
+	Col int `json:"col"`
+}
+
+type FlagRequest struct {
+	Row int `json:"row"`
+	Col int `json:"col"`
+}

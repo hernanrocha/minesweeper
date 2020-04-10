@@ -16,7 +16,7 @@ type Game struct {
 	Board     [][]int
 }
 
-var currentGame Game
+var CurrentGame Game
 
 func NewGame() Game {
 	game := Game{
@@ -37,7 +37,31 @@ func NewGame() Game {
 	game.Board[2][1] = CELL_BOMB
 	game.Board[4][4] = CELL_BOMB
 
-	currentGame = game
+	CurrentGame = game
 
 	return game
+}
+
+func (g *Game) calculateCell(row, col int) {
+	g.Board[row][col] = 4
+}
+
+func (g *Game) RevealCell(row, col int) {
+	if row >= g.Rows || col >= g.Cols {
+		return
+	}
+
+	if g.Board[row][col] == CELL_BLANK {
+		g.calculateCell(row, col)
+	}
+}
+
+func (g *Game) FlagCell(row, col int) {
+	if row >= g.Rows || col >= g.Cols {
+		return
+	}
+
+	if g.Board[row][col] == CELL_BLANK {
+		g.Board[row][col] = CELL_FLAG
+	}
 }

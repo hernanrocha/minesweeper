@@ -7,7 +7,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"github.com/hernanrocha/minesweeper/controller"
-	// _ "github.com/hernanrocha/minesweeper/service/docs"
+	_ "github.com/hernanrocha/minesweeper/docs"
 )
 
 func failOnError(err error, msg string) {

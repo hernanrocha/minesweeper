@@ -1,0 +1,108 @@
+basePath: /
+definitions:
+  viewmodels.CreateGameRequest:
+    type: object
+  viewmodels.CreateGameResponse:
+    properties:
+      board:
+        items:
+          items:
+            type: integer
+          type: array
+        type: array
+      cols:
+        type: integer
+      created_at:
+        type: string
+      mines:
+        type: integer
+      rows:
+        type: integer
+    type: object
+  viewmodels.FlagRequest:
+    properties:
+      col:
+        type: integer
+      row:
+        type: integer
+    type: object
+  viewmodels.RevealRequest:
+    properties:
+      col:
+        type: integer
+      row:
+        type: integer
+    type: object
+host: http://localhost:8001
+info:
+  contact:
+    email: hernanrocha93(at)gmail.com
+    name: Hernan Rocha
+  description: API for minesweeper
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Swagger Minesweeper API
+  version: "1.0"
+paths:
+  /api/v1/game:
+    post:
+      description: Create Game in database
+      parameters:
+      - description: Game Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/viewmodels.CreateGameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/viewmodels.CreateGameResponse'
+      summary: Create Game
+      tags:
+      - Game
+  /api/v1/game/{id}/flag:
+    post:
+      description: Flag cell in board
+      parameters:
+      - description: Cell Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/viewmodels.FlagRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/viewmodels.CreateGameResponse'
+      summary: Flag Cell
+      tags:
+      - Game
+  /api/v1/game/{id}/reveal:
+    post:
+      description: Reveal cell in board
+      parameters:
+      - description: Cell Data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/viewmodels.RevealRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/viewmodels.CreateGameResponse'
+      summary: Reveal Cell
+      tags:
+      - Game
+swagger: "2.0"

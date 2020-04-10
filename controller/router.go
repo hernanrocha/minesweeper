@@ -41,13 +41,8 @@ func SetupRouter() *gin.Engine {
 		// auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 
 		v1.POST("/game", c.CreateGame)
-		/*
-			v1.GET("/rooms", c.ListRooms)
-			v1.GET("/rooms/:id", c.GetRoom)
-
-			v1.GET("/rooms/:id/messages", m.ListRoomMessages)
-			v1.POST("/rooms/:id/messages", m.CreateMessage)
-		*/
+		v1.POST("/game/:id/reveal", c.RevealCell)
+		v1.POST("/game/:id/flag", c.FlagCell)
 	}
 
 	// Swagger

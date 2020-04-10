@@ -1,0 +1,166 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for minesweeper",
+        "title": "Swagger Minesweeper API",
+        "contact": {
+            "name": "Hernan Rocha",
+            "email": "hernanrocha93(at)gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "http://localhost:8001",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/game": {
+            "post": {
+                "description": "Create Game in database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Create Game",
+                "parameters": [
+                    {
+                        "description": "Game Data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.CreateGameRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.CreateGameResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/game/{id}/flag": {
+            "post": {
+                "description": "Flag cell in board",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Flag Cell",
+                "parameters": [
+                    {
+                        "description": "Cell Data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.FlagRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.CreateGameResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/game/{id}/reveal": {
+            "post": {
+                "description": "Reveal cell in board",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Game"
+                ],
+                "summary": "Reveal Cell",
+                "parameters": [
+                    {
+                        "description": "Cell Data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.RevealRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/viewmodels.CreateGameResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "viewmodels.CreateGameRequest": {
+            "type": "object"
+        },
+        "viewmodels.CreateGameResponse": {
+            "type": "object",
+            "properties": {
+                "board": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "cols": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "mines": {
+                    "type": "integer"
+                },
+                "rows": {
+                    "type": "integer"
+                }
+            }
+        },
+        "viewmodels.FlagRequest": {
+            "type": "object",
+            "properties": {
+                "col": {
+                    "type": "integer"
+                },
+                "row": {
+                    "type": "integer"
+                }
+            }
+        },
+        "viewmodels.RevealRequest": {
+            "type": "object",
+            "properties": {
+                "col": {
+                    "type": "integer"
+                },
+                "row": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
