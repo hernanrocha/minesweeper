@@ -27,13 +27,14 @@ const (
 )
 
 type Game struct {
-	ID        string
-	CreatedAt time.Time
-	Rows      int
-	Cols      int
-	Mines     int
-	Board     [][]int
-	Status    GameStatus
+	ID         string
+	CreatedAt  time.Time
+	FinishedAt *time.Time
+	Rows       int
+	Cols       int
+	Mines      int
+	Board      [][]int
+	Status     GameStatus
 }
 
 func NewGame(rows, cols, mines int) *Game {
@@ -94,12 +95,13 @@ func LoadGame(db *redis.Client, id string) (*Game, error) {
 
 func (g *Game) ToView() *Game {
 	view := &Game{
-		ID:        g.ID,
-		CreatedAt: g.CreatedAt,
-		Rows:      g.Rows,
-		Cols:      g.Cols,
-		Mines:     g.Mines,
-		Status:    g.Status,
+		ID:         g.ID,
+		CreatedAt:  g.CreatedAt,
+		Rows:       g.Rows,
+		Cols:       g.Cols,
+		Mines:      g.Mines,
+		Status:     g.Status,
+		FinishedAt: g.FinishedAt,
 	}
 
 	view.Board = make([][]int, view.Rows)
@@ -148,10 +150,14 @@ func (g *Game) RevealCell(row, col int) {
 
 		if g.isOver() {
 			g.Status = STATUS_WON
+			now := time.Now()
+			g.FinishedAt = &now
 		}
 	} else if g.Board[row][col] == CELL_BOMB {
 		g.Board[row][col] = CELL_REVEALED_BOMB
 		g.Status = STATUS_LOSE
+		now := time.Now()
+		g.FinishedAt = &now
 	}
 }
 

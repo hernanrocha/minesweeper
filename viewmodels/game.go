@@ -11,13 +11,14 @@ type CreateGameRequest struct {
 }
 
 type CreateGameResponse struct {
-	ID        string    `json:"id"`
-	Rows      int       `json:"rows"`
-	Cols      int       `json:"cols"`
-	Mines     int       `json:"mines"`
-	Board     [][]int   `json:"board"`
-	Status    string    `json:"status"`
-	CreatedAt time.Time `json:"created_at"`
+	ID         string     `json:"id"`
+	Rows       int        `json:"rows"`
+	Cols       int        `json:"cols"`
+	Mines      int        `json:"mines"`
+	Board      [][]int    `json:"board"`
+	Status     string     `json:"status"`
+	CreatedAt  time.Time  `json:"created_at"`
+	FinishedAt *time.Time `json:"finished_at;omitempty"`
 }
 
 type RevealRequest struct {

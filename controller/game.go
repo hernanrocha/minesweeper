@@ -42,13 +42,14 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
-		ID:        game.ID,
-		Rows:      game.Rows,
-		Cols:      game.Cols,
-		Mines:     game.Mines,
-		Board:     game.Board,
-		CreatedAt: game.CreatedAt,
-		Status:    string(game.Status),
+		ID:         game.ID,
+		Rows:       game.Rows,
+		Cols:       game.Cols,
+		Mines:      game.Mines,
+		Board:      game.Board,
+		CreatedAt:  game.CreatedAt,
+		FinishedAt: game.FinishedAt,
+		Status:     string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -68,18 +69,20 @@ func (c *GameController) GetGame(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
-		ID:        game.ID,
-		Rows:      game.Rows,
-		Cols:      game.Cols,
-		Mines:     game.Mines,
-		Board:     game.Board,
-		CreatedAt: game.CreatedAt,
-		Status:    string(game.Status),
+		ID:         game.ID,
+		Rows:       game.Rows,
+		Cols:       game.Cols,
+		Mines:      game.Mines,
+		Board:      game.Board,
+		CreatedAt:  game.CreatedAt,
+		FinishedAt: game.FinishedAt,
+		Status:     string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -106,6 +109,7 @@ func (c *GameController) RevealCell(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	game.RevealCell(json.Row, json.Col)
@@ -113,13 +117,14 @@ func (c *GameController) RevealCell(ctx *gin.Context) {
 	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
-		ID:        game.ID,
-		Rows:      game.Rows,
-		Cols:      game.Cols,
-		Mines:     game.Mines,
-		Board:     game.Board,
-		CreatedAt: game.CreatedAt,
-		Status:    string(game.Status),
+		ID:         game.ID,
+		Rows:       game.Rows,
+		Cols:       game.Cols,
+		Mines:      game.Mines,
+		Board:      game.Board,
+		CreatedAt:  game.CreatedAt,
+		FinishedAt: game.FinishedAt,
+		Status:     string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
@@ -146,6 +151,7 @@ func (c *GameController) FlagCell(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
 	}
 
 	game.FlagCell(json.Row, json.Col)
@@ -153,13 +159,14 @@ func (c *GameController) FlagCell(ctx *gin.Context) {
 	game = game.ToView()
 
 	response := &viewmodels.CreateGameResponse{
-		ID:        game.ID,
-		Rows:      game.Rows,
-		Cols:      game.Cols,
-		Mines:     game.Mines,
-		Board:     game.Board,
-		CreatedAt: game.CreatedAt,
-		Status:    string(game.Status),
+		ID:         game.ID,
+		Rows:       game.Rows,
+		Cols:       game.Cols,
+		Mines:      game.Mines,
+		Board:      game.Board,
+		CreatedAt:  game.CreatedAt,
+		FinishedAt: game.FinishedAt,
+		Status:     string(game.Status),
 	}
 
 	ctx.JSON(http.StatusOK, response)
