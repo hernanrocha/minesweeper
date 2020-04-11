@@ -6,11 +6,15 @@ import (
 	"github.com/go-redis/redis/v7"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	"github.com/hernanrocha/minesweeper/tapcolors/controller"
 )
 
 func SetupRouter(client *redis.Client) *gin.Engine {
 	// Controllers
 	c := NewGameController(client)
+	tc := controller.NewGameController(client)
+	ws := controller.NewWebSocketController()
 
 	// Default Engine
 	r := gin.Default()
@@ -45,6 +49,9 @@ func SetupRouter(client *redis.Client) *gin.Engine {
 		v1.GET("/game/:id", c.GetGame)
 		v1.POST("/game/:id/reveal", c.RevealCell)
 		v1.POST("/game/:id/flag", c.FlagCell)
+
+		v1.POST("/tapcolors/game", tc.CreateGame)
+		v1.GET("/tapcolors/ws", ws.WebSocket)
 	}
 
 	// Swagger
