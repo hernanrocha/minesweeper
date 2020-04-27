@@ -88,6 +88,10 @@ func Handle(msg *viewmodels.WebSocketMessage, game *models.Game) *models.Game {
 		log.Println("New Game Created", msg.Payload.Level)
 	case "tap":
 		game.Tap(msg.Payload.Row, msg.Payload.Col)
+	case "solve":
+		if game.Level <= 5 {
+			log.Println(game.FindSolution())
+		}
 	default:
 		log.Println("Unknown Command")
 	}

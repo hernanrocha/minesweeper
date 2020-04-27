@@ -4,9 +4,6 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-
-	"github.com/go-redis/redis/v7"
 	"github.com/hernanrocha/minesweeper/controller"
 	_ "github.com/hernanrocha/minesweeper/docs"
 )
@@ -39,22 +36,12 @@ func getEnv(key, fallback string) string {
 
 func main() {
 	log.Println("Starting web server...")
-	os.Setenv("PORT", "8002")
+	os.Setenv("PORT", "8010")
 
-	// Setup Redis database
-	addr := getEnv("DB_CONNECTION", "localhost:16379")
-	client := redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Password: "",
-		DB:       0,
-	})
-
-	err := client.Set("key", "value", 0).Err()
-	failOnError(err, "Error conecting to redis")
-	defer client.Close()
+	// docker run --name tapcolors-html -v /root/tapcolors/html/dist:/usr/share/nginx/html:ro -p 8011:80 -d nginx
 
 	// Setup router
-	r := controller.SetupRouter(client)
-	err = r.Run() // listen and serve on 0.0.0.0:8002
+	r := controller.SetupRouter()
+	err := r.Run() // listen and serve on 0.0.0.0:8002
 	failOnError(err, "Failed starting server")
 }

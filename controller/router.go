@@ -3,17 +3,15 @@ package controller
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis/v7"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 
 	"github.com/hernanrocha/minesweeper/tapcolors/controller"
 )
 
-func SetupRouter(client *redis.Client) *gin.Engine {
+func SetupRouter() *gin.Engine {
 	// Controllers
-	c := NewGameController(client)
-	tc := controller.NewGameController(client)
+	tc := controller.NewGameController()
 	ws := controller.NewWebSocketController()
 
 	// Default Engine
@@ -44,11 +42,6 @@ func SetupRouter(client *redis.Client) *gin.Engine {
 
 		// Refresh time can be longer than token timeout
 		// auth.GET("/refresh_token", authMiddleware.RefreshHandler)
-
-		v1.POST("/game", c.CreateGame)
-		v1.GET("/game/:id", c.GetGame)
-		v1.POST("/game/:id/reveal", c.RevealCell)
-		v1.POST("/game/:id/flag", c.FlagCell)
 
 		v1.POST("/tapcolors/game", tc.CreateGame)
 		v1.GET("/tapcolors/ws", ws.WebSocket)

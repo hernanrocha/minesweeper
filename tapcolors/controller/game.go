@@ -5,21 +5,17 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/go-redis/redis/v7"
 	"github.com/hernanrocha/minesweeper/tapcolors/models"
 	"github.com/hernanrocha/minesweeper/tapcolors/viewmodels"
 )
 
 // GameController ...
 type GameController struct {
-	db *redis.Client
 }
 
 // NewGameController ...
-func NewGameController(db *redis.Client) *GameController {
-	return &GameController{
-		db: db,
-	}
+func NewGameController() *GameController {
+	return &GameController{}
 }
 
 // CreateGame godoc
@@ -38,6 +34,8 @@ func (c *GameController) CreateGame(ctx *gin.Context) {
 	}
 
 	game := models.NewRandom(4)
+
+	// log.Println(game.FindSolution())
 	// game.Save(c.db)
 	// game = game.ToView()
 
